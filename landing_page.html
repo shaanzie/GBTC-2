@@ -6,23 +6,20 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="all.css">
+<script type="text/javascript" src="landing_page.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <body>
 
 <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
   <div class="w3-display-topleft w3-padding-large w3-small">
     <img src="images/logo.png" height="100px">
   </div>
-  <div class="w3-display-middle">
-    <form action="verify.php" method="POST">
-        
-        <input type="text" placeholder="Enter your UID" style="color: ivory; height: 50px; font-size: larger" size="55"></input>
+    <div class="w3-display-middle">
+        <input type="text" placeholder="Enter your UID" id="inp" style="color: ivory; height: 50px; font-size: larger" size="55"></input>
         <br><br>
         <br><br>
-        <submit class="w3-animate-top w3-button w3-xlarge w3-display-middle">Verify UID</submit>
-
-    </form>
-    
-  </div>
+        <button class="w3-animate-top w3-button w3-xlarge w3-display-middle" onclick=validate()>Verify UID</button>
+    </div>
 </div>
 
 </body>
