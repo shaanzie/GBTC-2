@@ -8,16 +8,64 @@
 <link rel="stylesheet" href="all.css">
 <script type="text/javascript" src="voting.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<body onload=generateList()>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-firestore.js"></script>
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyBJg4TC1_XWaPRPYodprTUBYk3SFU1b2OQ",
+    authDomain: "gbtc-2239b.firebaseapp.com",
+    databaseURL: "https://gbtc-2239b.firebaseio.com",
+    projectId: "gbtc-2239b",
+    storageBucket: "",
+    messagingSenderId: "1051924858252",
+    appId: "1:1051924858252:web:84ec78e99bf7fa58"
+  };
+    firebase.initializeApp(firebaseConfig);
+
+
+  
+  
+  function fun(){
+    var db = firebase.firestore();
+    db.collection("CandidateList").get().then((querySnapshot) => {
+    var counter = 0;
+    var main_list = document.getElementById('main_list');
+    querySnapshot.forEach((doc) => {
+        
+        var listElement = document.getElementById('list');
+        var cloneList = listElement.cloneNode(true);
+        var spanCloneName = cloneList.querySelector('#name');
+        var spanCloneConst = cloneList.querySelector('#const');
+        var imgTag = cloneList.querySelector('#photo');
+        imgTag.setAttribute('src', doc.data()['Party Image'])
+        spanCloneName.textContent = String(doc.data()['Name']);
+        spanCloneConst.textContent = String(doc.data()['Constituency Name']);
+        cloneList.setAttribute('id',counter++);
+        cloneList.setAttribute('style','display: block');
+
+        main_list.appendChild(cloneList);
+
+    
+        
+    });
+
+});
+
+}
+</script>
+<body onload="fun()">
 <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
     <div class="w3-container" >
         <h2>Candidates List</h2>
         <ul id="main_list" class="w3-ul w3-card-4">
-        <li class='w3-bar' onclick="">
-                <img src="images/avatar_logo.png" class ='w3-bar-item w3-circle w3-hide-small' style='width:85px'>
+        <li class='w3-bar' id = "list" style="display: none">
+                <img src="dummy.jpg" id='photo' class ='w3-bar-item w3-circle w3-hide-small' style='width:85px'>
                 <div class='w3-bar-item'>
-                    <span class='w3-large'>John Doe</span><br>
-                    <span>Fake Constituency</span>
+                    <span class='w3-large'id = 'name'>John Doe</span><br>
+                    <span id = 'const'>Fake Constituency</span>
                 </div>
         </li>
     </ul>

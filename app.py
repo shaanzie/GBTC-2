@@ -14,7 +14,7 @@ mysql = MySQL(app)
 
 @app.route('/login', methods = ['POST'])
 def index():
-    UID=request.json[0]
+    print(request.json)
     cur = mysql.connection.cursor()
     cur.execute("SELECT count(*) FROM Voting WHERE"+ UID +"= ID")
     if(cur):
