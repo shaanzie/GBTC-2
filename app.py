@@ -16,7 +16,7 @@ mysql = MySQL(app)
 def index():
     print(request.json)
     cur = mysql.connection.cursor()
-    cur.execute("SELECT count(*) FROM Voting WHERE"+ UID +"= ID")
+    cur.execute("SELECT count(*) FROM Voting WHERE UID = ID")
     if(cur):
         return Response(status=201)
 
