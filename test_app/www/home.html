@@ -55,13 +55,20 @@
                 <input type="text" style="width:50%;margin:auto;" class="form-control" id="const" name="email" placeholder="Current Constituency">
                 <button class="btn btn-block btn-secondary btn-red" id="but" style="width:30%;margin:auto;" onclick="fun()">Register</button>
             </div>
+            
 <script>
     var con=document.qeurySelector("#const").value;
+    var realcon = window.sessionStorage.getItem("constid");
     function fun(){
-    //firebase verificatiom.
+      if (con == realcon) {
+        window.location.href="qr.html";
+      }
+      else {
+        alert("Error loading credentials!");
+      }
+}
     //navigate to qr code generator, instruct to take screenshot.
-    window.location.href="qr.html";
-    }
+    
 </script>
  
     <!-- External JS -->

@@ -53,14 +53,13 @@
             <div id="qrcode" style="text-align:center"></div>
 
 </section>
-            
-            <script>
-                //firebase code to get id using window.localStorage.voteid
-                //qr generate code:
+<script>
 
+                //qr generate code:
+                var slno = window.sessionStorage.getItem("qrno");
                 var qr= new QRCode(document.getElementById("qrcode"),
                 {
-                    text: "http://jindo.dev.naver.com/collie",
+                    text: slno,
                     width: 128,
                     height: 128,
                     colorDark : "#000000",
