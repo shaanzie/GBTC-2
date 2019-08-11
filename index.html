@@ -15,12 +15,29 @@
     <img src="images/logo.png" height="100px">
   </div>
     <div class="w3-display-middle">
+        <form action=''>
         <input type="text" placeholder="Enter your UID" id="inp" style="color: ivory; height: 50px; font-size: larger" size="55"></input>
         <br><br>
         <br><br>
-        <button class="w3-animate-top w3-button w3-xlarge w3-display-middle" onclick=validate()>Verify UID</button>
+        <submit class="w3-animate-top w3-button w3-xlarge w3-display-middle" onclick='fun()'>Verify UID</submit>
+      </form>  
     </div>
 </div>
-
+<script>
+  function fun(){
+  var username=document.getElementById('inp').value;
+  $.ajax({
+    type:'POST',
+    url: 'localhost:5000',
+    data: JSON.stringify(username),
+    dataType:'text',
+    success:function(data){
+      if(data==201){
+        window.location.href='voting.html'
+      }
+    },
+  });
+  }
+</script>
 </body>
 </html>

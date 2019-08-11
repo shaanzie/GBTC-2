@@ -9,7 +9,7 @@ function validate()
         data : JSON.stringify(req),
         contentType : "application/json",
         success : function(data)    {
-            console.log(req);
+            console.log(data);
             window.location.replace('voting.html')
         },
         error : function()  {
