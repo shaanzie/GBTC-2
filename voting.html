@@ -29,6 +29,13 @@
   
   
   function fun(){
+    var name = window.sessionStorage.getItem("Name");
+    if(name == null)
+    {
+      window.location.href = "index.html";
+    }
+    var h2 = document.getElementById("name");
+    h2.textContent = "Hello " + name + "!";
     var db = firebase.firestore();
     db.collection("CandidateList").get().then((querySnapshot) => {
     var counter = 0;
@@ -59,6 +66,7 @@
 <body onload="fun()">
 <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
     <div class="w3-container" >
+        <h2 id= "name"></h2>
         <h2>Candidates List</h2>
         <ul id="main_list" class="w3-ul w3-card-4">
         <li class='w3-bar' id = "list" style="display: none">
