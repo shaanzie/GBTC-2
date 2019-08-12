@@ -48,7 +48,7 @@
         var spanCloneName = cloneList.querySelector('#name');
         var spanCloneConst = cloneList.querySelector('#const');
         var imgTag = cloneList.querySelector('#photo');
-        imgTag.setAttribute('src', doc.data()['Party Image'])
+        imgTag.setAttribute('src', doc.data()['Party'])
         spanCloneName.textContent = String(doc.data()['Name']);
         spanCloneConst.textContent = String(doc.data()['Constituency Name']);
         cloneList.setAttribute('id',counter++);
