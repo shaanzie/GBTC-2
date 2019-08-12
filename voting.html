@@ -30,6 +30,7 @@
   
   function fun(){
     var name = window.sessionStorage.getItem("Name");
+    var constID = window.sessionStorage.getItem("ConstID");
     if(name == null)
     {
       window.location.href = "index.html";
@@ -37,7 +38,7 @@
     var h2 = document.getElementById("name");
     h2.textContent = "Hello " + name + "!";
     var db = firebase.firestore();
-    db.collection("CandidateList").get().then((querySnapshot) => {
+    db.collection("CandidateList").where('Constituency ID', '==', parseInt(constID)).get().then((querySnapshot) => {
     var counter = 0;
     var main_list = document.getElementById('main_list');
     querySnapshot.forEach((doc) => {

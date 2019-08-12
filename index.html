@@ -32,6 +32,7 @@
       if (querySnapshot.size == 1) {
         var name = (querySnapshot.docs[0].data()['Name']);
         window.sessionStorage.setItem("Name", name);
+        window.sessionStorage.setItem("ConstID", querySnapshot.docs[0].data()['Constituency ID']);
         window.location.href = "voting.html";
       }
       else {
