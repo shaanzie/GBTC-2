@@ -21,18 +21,18 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        './test/specs/**/*.js'
+        './azure-vote/test/specs/**/*.js'
     ],
     // Patterns to exclude.
     suites: {
         contract:[
-            './node_modules/.bin/test/specs/createcontract.js'
+            './azure-vote/test/specs/createcontract.js'
         ],
         action:[
             './test/specs/takeaction.js'
         ],
         first:[
-            './test/specs/azure-api-wannabe.js'
+            './azure-vote/test/specs/azure-api-wannabe.js'
         ],
         second:[
             './test/specs/azure-second-api-wannabe.js'
@@ -76,12 +76,6 @@ exports.config = {
         // it is possible to configure which logTypes to include/exclude.
         // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
         // excludeDriverLogs: ['bugreport', 'server'],
-    },
-    {
-        maxInstances: 10,
-        
-        browserName: 'chrome',
-
     },
     //uncomment if using these broswers as well.
     // {   maxInstances: 10,
