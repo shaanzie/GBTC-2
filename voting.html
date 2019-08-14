@@ -53,11 +53,7 @@
         spanCloneConst.textContent = String(doc.data()['Constituency Name']);
         cloneList.setAttribute('id',counter++);
         cloneList.setAttribute('style','display: block');
-
         main_list.appendChild(cloneList);
-
-    
-        
     });
 
 });
@@ -74,12 +70,69 @@
                 <img src="dummy.jpg" id='photo' class ='w3-bar-item w3-circle w3-hide-small' style='width:85px'>
                 <div class='w3-bar-item'>
                     <span class='w3-large'id = 'name'>John Doe</span><br>
-                    <span id = 'const'>Fake Constituency</span>
+                    <span id = 'const'>Fake Constituency</span><br><br>
+                    <button class = "w3-animate-top w3-button" id="vote" onclick="vote(event)">Vote</button>
                 </div>
         </li>
     </ul>
     </div>
 </div>
+<script>
+  //sends vote to azure
+  function vote(e){
+    var target=e.target;
+    var parent=target.parentNode;
+    var cid= parent.querySelector("#name").textContent+parent.querySelector("#const").textContent;
+    var cidjson={candidateid:cid};
+    console.log(cidjson);
+    $.ajax({
+      type: 'POST',
+      url: "http://localhost:5000/api/v1/create",
+      data: JSON.stringify(cidjson),
+      dataType: 'json',
+      contentType: 'application/json',
+      success: function(data) {
+        console.log(data);
+        //call trace here
+        traceaction();
+      }
+    });
+  }
+function traceaction(){
+  $.ajax({
+      type: 'GET',
+      url: "http://localhost:5000/api/v1/action",
+      success: function(data) {
+        console.log(data);
+        //call verify here
+        var val=verify();
+        if (val){
+          //message box of success, reset all session variables, restart back to home.
+          console.log("success");
+        }
+        else{
+          //messages box of failure, reset all session variables, send emails
+          //email(); optiponal?
+          console.log("failed");
+        }
+      }
+    }); 
+}
+
+function verify(){
+  $.ajax({
+      type: 'GET',
+      url: "http://localhost:5000/api/v1/verify",
+      success: function(data) {
+        console.log(data);
+        return True;
+      },
+    error: function(){
+      return false;
+    }
+    }); 
+}
+</script>
 </body>
 </html>
 
