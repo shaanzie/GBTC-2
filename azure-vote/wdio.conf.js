@@ -31,12 +31,9 @@ exports.config = {
         action:[
             './test/specs/takeaction.js'
         ],
-        first:[
-            './azure-vote/test/specs/azure-api-wannabe.js'
+        verify:[
+            './azure-vote/test/specs/verify.js'
         ],
-        second:[
-            './test/specs/azure-second-api-wannabe.js'
-        ]
     },
 
     exclude: [
@@ -71,7 +68,10 @@ exports.config = {
         // 5 instances get started at a time.
         maxInstances: 10,
         //
-        browserName: 'firefox', 
+        browserName: 'firefox',
+        "moz:firefoxOptions":{
+            args:['--headless']
+        }
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
         // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
