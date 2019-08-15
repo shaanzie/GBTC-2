@@ -2,6 +2,65 @@
 <html>
 <title>Voting Main Page</title>
 <meta charset="UTF-8">
+<head>
+<style>
+/* The Modal (background) */
+.modal {
+  color: rgba(114, 198, 231, 0.952);
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #eb8220;
+  color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+</style>
+</head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
@@ -42,13 +101,12 @@
     var counter = 0;
     var main_list = document.getElementById('main_list');
     querySnapshot.forEach((doc) => {
-        
         var listElement = document.getElementById('list');
         var cloneList = listElement.cloneNode(true);
         var spanCloneName = cloneList.querySelector('#name');
         var spanCloneConst = cloneList.querySelector('#const');
         var imgTag = cloneList.querySelector('#photo');
-        imgTag.setAttribute('src', doc.data()['Party'])
+        imgTag.setAttribute('src', doc.data()['Party']);
         spanCloneName.textContent = String(doc.data()['Name']);
         spanCloneConst.textContent = String(doc.data()['Constituency Name']);
         cloneList.setAttribute('id',counter++);
@@ -65,6 +123,37 @@
     <div class="w3-container" >
         <h2 id= "name"></h2>
         <h2>Candidates List</h2>
+        <!-- The Modal -->
+      <div id="myModal" class="modal">
+          <!-- Modal content -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2>Thank you for Voting!</h2>
+            </div>
+            <div class="modal-body">
+              <h3>Please wait for machine to reset</h3>
+            </div>
+            <div class="modal-footer">
+              <h4>Thank you for execersising your constitutional rights!</h4>
+            </div>
+          </div>
+        </div>
+        <div id="nuet" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+              <div class="modal-body">
+                <h4><strong>Please Wait.....</strong></h4>
+              </div>
+            </div>
+          </div>
+          <div id="mymodalfail" class="modal">
+              <!-- Modal content -->
+              <div class="modal-content">
+                <div class="modal-body">
+                  <h4><strong>Something has gone wrong!</strong> Please alert the authorities and ensure the booth is secure</h4>
+              </div>
+            </div>
+        </div>
         <ul id="main_list" class="w3-ul w3-card-4">
         <li class='w3-bar' id = "list" style="display: none">
                 <img src="dummy.jpg" id='photo' class ='w3-bar-item w3-circle w3-hide-small' style='width:85px'>
@@ -89,11 +178,11 @@
       type: 'POST',
       url: "http://localhost:5000/api/v1/create",
       data: JSON.stringify(cidjson),
-      dataType: 'json',
       contentType: 'application/json',
-      success: function(data) {
-        console.log(data);
+      success: function() {
+        console.log("success");
         //call trace here
+        popup('nuetral');
         traceaction();
       }
     });
@@ -101,36 +190,66 @@
 function traceaction(){
   $.ajax({
       type: 'GET',
-      url: "http://localhost:5000/api/v1/action",
+      url: "http://localhost:5000/api/v1/verify",
       success: function(data) {
         console.log(data);
-        //call verify here
-        var val=verify();
-        if (val){
-          //message box of success, reset all session variables, restart back to home.
-          console.log("success");
-        }
-        else{
-          //messages box of failure, reset all session variables, send emails
-          //email(); optiponal?
-          console.log("failed");
-        }
+        //message box of success here
+        popup('true');
+        action();
+      },
+      error: function(data){
+        popup('false');
+        console.log("failed");
+        //message box of failure here
       }
     }); 
 }
 
-function verify(){
+function action(){
   $.ajax({
       type: 'GET',
-      url: "http://localhost:5000/api/v1/verify",
+      url: "http://localhost:5000/api/v1/action",
       success: function(data) {
-        console.log(data);
-        return True;
-      },
-    error: function(){
-      return false;
-    }
+        //reset varaibles
+        console.log("success!");
+        reset();
+      }
     }); 
+}
+function reset(){
+  //redirect to ligin page
+  //attach this function to button on success message box
+  window.sessionStorage.removeItem('name');
+  window.sessionStorage.removeItem('ConstID');
+  window.location.href="index.html";
+}
+
+function popup(val){
+// Get the modal
+var modal = document.getElementById("myModal");
+var modal1 = document.getElementById("nuet");
+var modal2 = document.getElementById("mymodalfail");
+if(val=="true"){
+  modal1.style.display="none";
+  modal2.style.display="none";
+  modal.style.display = "block";
+}
+else if(val=="nuetral"){
+  modal.style.display="none";
+  modal2.style.display="none";
+  nuetralmodal=modal1.querySelector(".modal-body");
+  nuetralmodal.style.backgroundColor="rgba(197, 194, 194, 0.959)";
+  nuetralmodal.style.color="grey";
+  modal1.style.display="block";
+}
+else{
+modal.style.display="none";
+modal1.style.display="none";
+failmodal=modal2.querySelector(".modal-body")
+failmodal.style.backgroundColor="#e27571";
+failmodal.style.color="black";
+modal2.style.display="block";
+} 
 }
 </script>
 </body>
