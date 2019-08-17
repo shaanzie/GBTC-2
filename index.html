@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<title>Landing Page</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="all.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-firestore.js"></script>
+
+
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyBJg4TC1_XWaPRPYodprTUBYk3SFU1b2OQ",
+    authDomain: "gbtc-2239b.firebaseapp.com",
+    databaseURL: "https://gbtc-2239b.firebaseio.com",
+    projectId: "gbtc-2239b",
+    storageBucket: "",
+    messagingSenderId: "1051924858252",
+    appId: "1:1051924858252:web:84ec78e99bf7fa58"
+  };
+  firebase.initializeApp(firebaseConfig);
+
+  var db = firebase.firestore();
+  function fun() {
+    var UID = document.getElementById('inp').value;
+    db.collection('UID List').where('UID', '==', parseInt(UID)).get().then(function (querySnapshot) {
+      if (querySnapshot.size == 1) {
+        var name = (querySnapshot.docs[0].data()['Name']);
+        window.sessionStorage.setItem("Name", name);
+        window.sessionStorage.setItem("ConstID", querySnapshot.docs[0].data()['Constituency ID']);
+        window.location.href = "voting.html";
+      }
+      else {
+        alert("Error loading credentials!");
+      }
+
+    });
+  }
+</script>
+
+<body>
+
+  <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+    <div class="w3-display-topleft w3-padding-large w3-small">
+      <img src="images/logo.png" height="100px">
+    </div>
+    <div class="w3-display-middle">
+
+      <input type="text" placeholder="Enter your UID" id="inp" style="color: ivory; height: 50px; font-size: larger"
+        size="55"></input>
+      <br><br>
+      <br><br>
+      <button class="w3-animate-top w3-button w3-xlarge w3-display-middle" onclick='fun()'>Verify UID</button>
+
+    </div>
+  </div>
+
+</body>
+
+</html>

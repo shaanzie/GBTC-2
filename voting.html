@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<title>Voting Main Page</title>
+<meta charset="UTF-8">
+<head>
+<style>
+/* The Modal (background) */
+.modal {
+  color: rgba(114, 198, 231, 0.952);
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #eb8220;
+  color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+</style>
+</head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="all.css">
+<script type="text/javascript" src="voting.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-firestore.js"></script>
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyBJg4TC1_XWaPRPYodprTUBYk3SFU1b2OQ",
+    authDomain: "gbtc-2239b.firebaseapp.com",
+    databaseURL: "https://gbtc-2239b.firebaseio.com",
+    projectId: "gbtc-2239b",
+    storageBucket: "",
+    messagingSenderId: "1051924858252",
+    appId: "1:1051924858252:web:84ec78e99bf7fa58"
+  };
+    firebase.initializeApp(firebaseConfig);
+
+
+  
+  
+  function fun(){
+    var name = window.sessionStorage.getItem("Name");
+    var constID = window.sessionStorage.getItem("ConstID");
+    if(name == null)
+    {
+      window.location.href = "index.html";
+    }
+    var h2 = document.getElementById("name");
+    h2.textContent = "Hello " + name + "!";
+    var db = firebase.firestore();
+    db.collection("CandidateList").where('Constituency ID', '==', parseInt(constID)).get().then((querySnapshot) => {
+    var counter = 0;
+    var main_list = document.getElementById('main_list');
+    querySnapshot.forEach((doc) => {
+        var listElement = document.getElementById('list');
+        var cloneList = listElement.cloneNode(true);
+        var spanCloneName = cloneList.querySelector('#name');
+        var spanCloneConst = cloneList.querySelector('#const');
+        var imgTag = cloneList.querySelector('#photo');
+        imgTag.setAttribute('src', doc.data()['Party']);
+        spanCloneName.textContent = String(doc.data()['Name']);
+        spanCloneConst.textContent = String(doc.data()['Constituency Name']);
+        cloneList.setAttribute('id',counter++);
+        cloneList.setAttribute('style','display: block');
+        main_list.appendChild(cloneList);
+    });
+
+});
+
+}
+</script>
+<body onload="fun()">
+<div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+    <div class="w3-container" >
+        <h2 id= "name"></h2>
+        <h2>Candidates List</h2>
+        <!-- The Modal -->
+      <div id="myModal" class="modal">
+          <!-- Modal content -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2>Thank you for Voting!</h2>
+            </div>
+            <div class="modal-body">
+              <h3>Please wait for machine to reset</h3>
+            </div>
+            <div class="modal-footer">
+              <h4>Thank you for execersising your constitutional rights!</h4>
+            </div>
+          </div>
+        </div>
+        <div id="nuet" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+              <div class="modal-body">
+                <h4><strong>Please Wait.....</strong></h4>
+              </div>
+            </div>
+          </div>
+          <div id="mymodalfail" class="modal">
+              <!-- Modal content -->
+              <div class="modal-content">
+                <div class="modal-body">
+                  <h4><strong>Something has gone wrong!</strong> Please alert the authorities and ensure the booth is secure</h4>
+              </div>
+            </div>
+        </div>
+        <ul id="main_list" class="w3-ul w3-card-4">
+        <li class='w3-bar' id = "list" style="display: none">
+                <img src="dummy.jpg" id='photo' class ='w3-bar-item w3-circle w3-hide-small' style='width:85px'>
+                <div class='w3-bar-item'>
+                    <span class='w3-large'id = 'name'>John Doe</span><br>
+                    <span id = 'const'>Fake Constituency</span><br><br>
+                    <button class = "w3-animate-top w3-button" id="vote" onclick="vote(event)">Vote</button>
+                </div>
+        </li>
+    </ul>
+    </div>
+</div>
+<script>
+  //sends vote to azure
+  function vote(e){
+    var target=e.target;
+    var parent=target.parentNode;
+    var cid= parent.querySelector("#name").textContent+parent.querySelector("#const").textContent;
+    var cidjson={candidateid:cid};
+    console.log(cidjson);
+    $.ajax({
+      type: 'POST',
+      url: "http://localhost:5000/api/v1/create",
+      data: JSON.stringify(cidjson),
+      contentType: 'application/json',
+      success: function() {
+        console.log("success");
+        //call trace here
+        popup('nuetral');
+        traceaction();
+      }
+    });
+  }
+function traceaction(){
+  $.ajax({
+      type: 'GET',
+      url: "http://localhost:5000/api/v1/verify",
+      success: function(data) {
+        console.log(data);
+        //message box of success here
+        popup('true');
+        action();
+      },
+      error: function(data){
+        popup('false');
+        console.log("failed");
+        //message box of failure here
+      }
+    }); 
+}
+
+function action(){
+  $.ajax({
+      type: 'GET',
+      url: "http://localhost:5000/api/v1/action",
+      success: function(data) {
+        //reset varaibles
+        console.log("success!");
+        reset();
+      }
+    }); 
+}
+function reset(){
+  //redirect to ligin page
+  //attach this function to button on success message box
+  window.sessionStorage.removeItem('name');
+  window.sessionStorage.removeItem('ConstID');
+  window.location.href="index.html";
+}
+
+function popup(val){
+// Get the modal
+var modal = document.getElementById("myModal");
+var modal1 = document.getElementById("nuet");
+var modal2 = document.getElementById("mymodalfail");
+if(val=="true"){
+  modal1.style.display="none";
+  modal2.style.display="none";
+  modal.style.display = "block";
+}
+else if(val=="nuetral"){
+  modal.style.display="none";
+  modal2.style.display="none";
+  nuetralmodal=modal1.querySelector(".modal-body");
+  nuetralmodal.style.backgroundColor="rgba(197, 194, 194, 0.959)";
+  nuetralmodal.style.color="grey";
+  modal1.style.display="block";
+}
+else{
+modal.style.display="none";
+modal1.style.display="none";
+failmodal=modal2.querySelector(".modal-body")
+failmodal.style.backgroundColor="#e27571";
+failmodal.style.color="black";
+modal2.style.display="block";
+} 
+}
+</script>
+</body>
+</html>
+
+
