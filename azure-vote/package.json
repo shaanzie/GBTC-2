@@ -11,7 +11,7 @@
     "@wdio/mocha-framework": "^5.7.2",
     "@wdio/selenium-standalone-service": "^5.7.2",
     "@wdio/sync": "^5.7.2",
-    "node-fetch": "^2.3.0"
+    "node-fetch": "^2.6.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
